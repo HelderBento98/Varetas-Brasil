@@ -1,0 +1,250 @@
+/* =====================================================================
+   VARETAS BRASIL — Estilos das páginas internas de produto
+   Complementa css/styles.css
+   ===================================================================== */
+
+/* espaço para o header fixo */
+.product-page {
+    padding-top: var(--header-height);
+}
+
+/* ---------- Breadcrumb ---------- */
+.breadcrumb {
+    background-color: var(--light-gray);
+    padding: 22px 0;
+    font-size: 0.85rem;
+    color: var(--muted-text);
+}
+
+.breadcrumb a {
+    color: var(--primary-green);
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.breadcrumb a:hover {
+    color: var(--gold);
+}
+
+.breadcrumb .sep {
+    margin: 0 8px;
+    color: var(--gold);
+}
+
+/* ---------- Hero do produto ---------- */
+.product-hero {
+    padding: 60px 0;
+}
+
+.product-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.product-gallery img,
+.product-gallery .img-placeholder {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+}
+
+.product-info .section-subtitle {
+    justify-content: flex-start;
+}
+
+.product-info h1 {
+    font-size: 2.4rem;
+    margin-bottom: 20px;
+}
+
+.product-info .lead {
+    color: var(--muted-text);
+    font-size: 1.05rem;
+    margin-bottom: 28px;
+}
+
+.product-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+/* ---------- Lista de características ---------- */
+.feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 30px;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.95rem;
+    color: var(--dark-text);
+}
+
+.feature-list i {
+    color: var(--gold);
+    font-size: 1.1rem;
+    margin-top: 3px;
+}
+
+/* ---------- Seção de especificações ---------- */
+.product-specs {
+    background-color: var(--light-gray);
+}
+
+.product-specs h2 {
+    font-size: 2rem;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.specs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.spec-card {
+    background-color: var(--white);
+    border-radius: var(--radius);
+    padding: 26px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+
+.spec-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.spec-card i {
+    font-size: 1.6rem;
+    color: var(--gold);
+    margin-bottom: 14px;
+}
+
+.spec-card h4 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    color: var(--dark-text);
+}
+
+.spec-card p {
+    font-size: 0.88rem;
+    color: #666;
+}
+
+/* ---------- CTA faixa ---------- */
+.product-cta {
+    background-color: var(--primary-green);
+    color: var(--white);
+    text-align: center;
+    padding: 70px 20px;
+}
+
+.product-cta h2 {
+    color: var(--white);
+    font-size: 2rem;
+    margin-bottom: 16px;
+}
+
+.product-cta p {
+    color: #aebdb9;
+    max-width: 620px;
+    margin: 0 auto 30px;
+}
+
+.product-cta .btn-primary {
+    background-color: var(--gold);
+}
+
+.product-cta .btn-primary:hover {
+    background-color: var(--white);
+    color: var(--primary-green);
+}
+
+/* ---------- Outros produtos ---------- */
+.related h2 {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+}
+
+.related-card {
+    display: block;
+    background-color: var(--white);
+    border: 1px solid #eee;
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+
+.related-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-md);
+}
+
+.related-card .img-wrap {
+    height: 160px;
+    overflow: hidden;
+}
+
+.related-card img,
+.related-card .img-placeholder {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    transition: transform 0.5s var(--ease-out);
+}
+
+.related-card:hover img {
+    transform: scale(1.08);
+}
+
+.related-card .body {
+    padding: 20px;
+}
+
+.related-card h3 {
+    font-size: 1.05rem;
+    color: var(--dark-text);
+    margin-bottom: 6px;
+}
+
+.related-card span {
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 768px) {
+    .product-hero-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .product-gallery img,
+    .product-gallery .img-placeholder {
+        height: 320px;
+    }
+
+    .product-info h1 {
+        font-size: 1.9rem;
+    }
+}
