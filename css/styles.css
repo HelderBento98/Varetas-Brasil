@@ -852,28 +852,38 @@ header.scrolled .logo img {
 .inst-block {
     flex: 1;
     min-width: 300px;
-    padding: 60px 40px;
+    padding: 92px 40px;
 }
 
 .block-white {
-    background-color: var(--cream);
+    background:
+        radial-gradient(700px 340px at 50% -10%, rgba(192, 158, 121, 0.10), transparent 60%),
+        var(--cream);
     text-align: center;
 }
 
+.block-white .section-subtitle {
+    justify-content: center;
+}
+
 .block-white h2 {
-    font-size: 2rem;
+    font-size: clamp(1.7rem, 3vw, 2.2rem);
     margin-bottom: 20px;
+    max-width: 760px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .block-white p {
-    margin-bottom: 30px;
+    margin: 0 auto 44px;
     color: var(--muted-text);
-    font-size: 0.95rem;
+    font-size: 1rem;
+    max-width: 620px;
 }
 
 .inst-icons {
     display: flex;
-    gap: 30px;
+    gap: 22px;
     flex-wrap: wrap;
     justify-content: center;
 }
@@ -882,26 +892,38 @@ header.scrolled .logo img {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    font-size: 0.85rem;
+    gap: 14px;
+    font-family: var(--font-display);
+    font-size: 0.9rem;
     font-weight: 600;
+    color: var(--primary-green);
     text-align: center;
-    min-width: 100px;
-    transition: var(--transition);
+    min-width: 130px;
+    transition: transform 0.35s var(--ease-out);
 }
 
 .inst-icon-item:hover {
-    transform: translateY(-5px);
+    transform: translateY(-6px);
 }
 
 .inst-icon-item i {
-    font-size: 1.5rem;
-    color: var(--primary-green);
-    transition: var(--transition);
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: var(--gold-dark);
+    background: rgba(192, 158, 121, 0.12);
+    border: 1px solid rgba(192, 158, 121, 0.35);
+    transition: transform 0.35s var(--ease-spring), color 0.3s var(--ease-out), background 0.3s var(--ease-out);
 }
 
 .inst-icon-item:hover i {
-    color: var(--gold);
+    color: var(--white);
+    background: var(--gold);
+    transform: scale(1.08);
 }
 
 .block-green {
@@ -1081,7 +1103,7 @@ footer {
 .back-to-top {
     position: fixed;
     right: 24px;
-    bottom: 92px;
+    bottom: 24px;
     width: 46px;
     height: 46px;
     background-color: var(--primary-green);
