@@ -70,6 +70,25 @@ document.addEventListener('DOMContentLoaded', () => {
         revealEls.forEach(el => el.classList.add('in-view'));
     }
 
+    /* ---------- FAQ (acordeão) ---------- */
+    document.querySelectorAll('.faq-question').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const item = btn.closest('.faq-item');
+            const answer = item.querySelector('.faq-answer');
+            const isOpen = item.classList.contains('open');
+            // fecha todos
+            document.querySelectorAll('.faq-item.open').forEach(o => {
+                o.classList.remove('open');
+                o.querySelector('.faq-answer').style.maxHeight = null;
+            });
+            // abre o clicado (se estava fechado)
+            if (!isOpen) {
+                item.classList.add('open');
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+            }
+        });
+    });
+
     /* ---------- Destaque da navegação por seção ativa ---------- */
     const sections = document.querySelectorAll('section[id], footer[id]');
     const navLinks = document.querySelectorAll('.nav-menu a');
