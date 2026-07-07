@@ -1189,6 +1189,11 @@ footer {
     gap: 10px;
 }
 
+.footer-logo img {
+    max-height: 46px;
+    width: auto;
+}
+
 .footer-logo span {
     color: var(--gold);
 }
