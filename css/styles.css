@@ -246,9 +246,58 @@ header {
     transition: var(--transition);
 }
 
+/* ---- barra de topo (telefone / horário / e-mail) ---- */
+.top-bar {
+    background-color: var(--deep-green);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.8rem;
+    overflow: hidden;
+    max-height: 44px;
+    transition: max-height 0.35s var(--ease-out), opacity 0.3s var(--ease-out);
+}
+
+.top-bar-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 42px;
+    color: #cdd8d3;
+}
+
+.top-bar-info {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.top-bar-info a,
+.top-bar-info span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #cdd8d3;
+    transition: color 0.25s ease;
+}
+
+.top-bar-info a:hover {
+    color: var(--gold);
+}
+
+.top-bar-info i {
+    color: var(--gold);
+    font-size: 0.85rem;
+}
+
 /* estado ao rolar a página (adicionado via JS) */
 header.scrolled {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* recolhe a barra de topo ao rolar */
+header.scrolled .top-bar {
+    max-height: 0;
+    opacity: 0;
+    border-color: transparent;
 }
 
 header.scrolled .header-container {
@@ -1246,6 +1295,10 @@ footer {
     .hero-container {
         flex-direction: column;
         text-align: center;
+    }
+
+    .top-bar {
+        display: none;
     }
 
     .hero-content {
