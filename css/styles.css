@@ -21,7 +21,7 @@
     --muted-text: #4a5553;
 
     --font-main: 'Montserrat', sans-serif;
-    --font-display: 'Bricolage Grotesque', 'Montserrat', sans-serif;
+    --font-display: 'Poppins', 'Montserrat', sans-serif;
 
     --transition: all 0.3s ease;
     --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
