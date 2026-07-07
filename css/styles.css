@@ -273,13 +273,13 @@ header.scrolled .header-container {
 }
 
 .logo img {
-    max-height: 52px;
+    max-height: 38px;
     width: auto;
     transition: max-height 0.3s var(--ease-out);
 }
 
 header.scrolled .logo img {
-    max-height: 44px;
+    max-height: 32px;
 }
 
 .logo span {
@@ -443,43 +443,13 @@ header.scrolled .logo img {
     object-fit: cover;
     width: 100%;
     height: 520px;
-    animation: floaty 7s ease-in-out infinite;
+    transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out);
 }
 
-/* selo dourado flutuante sobre a imagem */
-.hero-seal {
-    position: absolute;
-    left: -26px;
-    bottom: 34px;
-    width: 128px;
-    height: 128px;
-    border-radius: 50%;
-    background: linear-gradient(145deg, var(--gold-light), var(--gold-dark));
-    color: var(--white);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 3px;
-    box-shadow: var(--shadow-gold);
-    animation: floaty 7s ease-in-out infinite reverse;
-}
-
-.hero-seal .seal-num {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 1.5rem;
-    line-height: 1;
-}
-
-.hero-seal .seal-txt {
-    font-size: 0.6rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600;
-    max-width: 94px;
-    line-height: 1.25;
+/* movimento só ao passar o mouse (como as demais imagens) */
+.hero-image img:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 40px 70px rgba(14, 31, 27, 0.22);
 }
 
 /* animação de entrada do hero (no load) */
@@ -1266,19 +1236,6 @@ footer {
 
     .hero-image img {
         height: 350px;
-    }
-
-    /* selo menor e reposicionado no mobile */
-    .hero-seal {
-        width: 96px;
-        height: 96px;
-        left: auto;
-        right: 14px;
-        bottom: 14px;
-    }
-
-    .hero-seal .seal-num {
-        font-size: 1.2rem;
     }
 
     .benefits-container {
