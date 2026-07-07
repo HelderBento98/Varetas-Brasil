@@ -651,41 +651,82 @@ header.scrolled .logo img {
 .app-card {
     flex: 1 1 18%;
     min-width: 200px;
-    height: 250px;
     position: relative;
-    border-radius: 4px;
+    border-radius: var(--radius);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
+    background: linear-gradient(160deg, var(--medium-green), var(--primary-green));
+    color: var(--white);
+    padding: 40px 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 14px;
+    transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
 }
 
-.app-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s var(--ease-out);
-}
-
-.app-card:hover img {
-    transform: scale(1.08);
-}
-
-.app-card-content {
+/* faixa dourada no topo, revelada no hover */
+.app-card::before {
+    content: '';
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
     width: 100%;
-    padding: 20px 10px;
-    background: linear-gradient(to top, rgba(0, 60, 47, 0.92) 0%, rgba(0, 60, 47, 0) 100%);
-    color: var(--white);
-    text-align: center;
-    font-weight: 700;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    transition: padding 0.3s var(--ease-out);
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s var(--ease-out);
 }
 
-.app-card:hover .app-card-content {
-    padding-bottom: 28px;
+.app-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-md);
+}
+
+.app-card:hover::before {
+    transform: scaleX(1);
+}
+
+.app-icon {
+    width: 74px;
+    height: 74px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(192, 158, 121, 0.15);
+    border: 1px solid rgba(192, 158, 121, 0.4);
+    transition: transform 0.35s var(--ease-out), background 0.35s var(--ease-out);
+}
+
+.app-icon i {
+    font-size: 1.9rem;
+    color: var(--gold);
+    transition: color 0.35s var(--ease-out);
+}
+
+.app-card:hover .app-icon {
+    transform: scale(1.08);
+    background: var(--gold);
+}
+
+.app-card:hover .app-icon i {
+    color: var(--white);
+}
+
+.app-card h3 {
+    color: var(--white);
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.app-card p {
+    font-size: 0.85rem;
+    color: #aebdb9;
+    line-height: 1.5;
 }
 
 /* ==================== INSTITUTIONAL BOTTOM ==================== */

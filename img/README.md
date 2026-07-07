@@ -1,31 +1,23 @@
 # Imagens do site
 
-Coloque aqui os arquivos de imagem com **exatamente** estes nomes (o site já
-os referencia). Enquanto um arquivo não existir, o site mostra um placeholder
-com a identidade visual no lugar dele — nada quebra o layout.
+Imagens atualmente usadas pelo site (já adicionadas):
 
-## Arquivos esperados
+| Arquivo | Onde aparece |
+|---|---|
+| `logo.png` | Logo no cabeçalho (branca, fundo transparente) |
+| `favicon.svg` | Ícone da aba do navegador |
+| `hero-rede-esgoto.jpg` | Imagem principal (topo / hero) |
+| `sobre-engate-macho.jpg` | Bloco "Sobre" (imagem grande) |
+| `sobre-mauricio.jpg` | Bloco "Sobre" |
+| `sobre-nivaldo.jpg` | Bloco "Sobre" |
+| `produto-varetas.jpg` | Card + página de Varetas |
+| `produto-ponteiras.jpg` | Card + página de Ponteiras |
+| `produto-acessorios.jpg` | Card + página de Acessórios |
+| `produto-kit.jpg` | Card + página de Kit completo |
 
-| Arquivo                         | Onde aparece                          |
-|---------------------------------|---------------------------------------|
-| `LOGO.png`                      | Logo no cabeçalho                     |
-| `rede de esgoto.png`            | Imagem principal (hero)               |
-| `engato macho na vareta.png`    | Galeria "Sobre" (imagem grande)       |
-| `colaborador Mauricio.jpg`      | Galeria "Sobre"                       |
-| `Colaborador Nivaldo.png`       | Galeria "Sobre"                       |
-| `varetas 2.0.png`               | Card de produto — Varetas             |
-| `pontas.png`                    | Card de produto — Ponteiras           |
-| `acessórios.png`                | Card de produto — Acessórios          |
-| `kit completo.png`              | Card de produto — Kit completo        |
-| `publico.png`                   | Aplicações — Setor Público            |
-| `prédios.png`                   | Aplicações — Prédios                  |
-| `condominios.png`               | Aplicações — Condomínios              |
-| `shopping.png`                  | Aplicações — Shopping                 |
-| `industrial.png`                | Aplicações — Setor Industrial         |
+## Observações
 
-## Dicas
-
-- Prefira **JPG/PNG otimizados** (ou WebP) para carregar rápido.
-- Imagens do hero e de produto ficam melhores em proporção paisagem
-  (ex.: 1200×800 px).
-- A logo em PNG com fundo transparente fica melhor sobre o cabeçalho verde.
+- A seção **Aplicações** usa cards com ícones (Font Awesome) na identidade da
+  marca — não depende de fotos.
+- Para trocar qualquer imagem, basta substituir o arquivo mantendo o mesmo nome.
+- As fotos foram otimizadas (JPEG, ~1400 px) para carregar rápido.
