@@ -38,8 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="cart-body"></div>
         <div class="cart-foot">
-            <p class="cart-note">Revise os itens e finalize pelo WhatsApp — nossa equipe passa os valores e condições.</p>
+            <p class="cart-note">Revise os itens e finalize pelo WhatsApp ou e-mail — nossa equipe passa os valores e condições.</p>
             <a class="btn btn-primary cart-finalize" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Finalizar pelo WhatsApp</a>
+            <a class="btn btn-outline cart-email"><i class="fa-regular fa-envelope"></i> Finalizar por E-mail</a>
             <button class="cart-clear" type="button">Limpar pedido</button>
         </div>`;
     document.body.appendChild(overlay);
@@ -48,6 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = drawer.querySelector('.cart-body');
     const foot = drawer.querySelector('.cart-foot');
     const finalizeBtn = drawer.querySelector('.cart-finalize');
+    const emailBtn = drawer.querySelector('.cart-email');
+    const EMAIL = 'comercial1@varetasbr.com.br';
 
     function openDrawer() { drawer.classList.add('open'); overlay.classList.add('open'); }
     function closeDrawer() { drawer.classList.remove('open'); overlay.classList.remove('open'); }
@@ -58,11 +61,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const count = () => cart.reduce((s, i) => s + i.qty, 0);
 
-    function waLink() {
+    function orderText() {
         let m = 'Olá! Gostaria de fazer um pedido/orçamento:\n\n';
         cart.forEach(i => { m += `• ${i.qty}x ${i.name}\n`; });
         m += '\nPoderiam me passar os valores e condições? Obrigado!';
-        return `https://wa.me/${WA}?text=${encodeURIComponent(m)}`;
+        return m;
+    }
+
+    function waLink() {
+        return `https://wa.me/${WA}?text=${encodeURIComponent(orderText())}`;
+    }
+
+    function mailLink() {
+        const subject = 'Pedido / Orçamento — Varetas Brasil';
+        return `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(orderText())}`;
     }
 
     function render() {
@@ -88,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="cart-remove" type="button" data-act="rem" aria-label="Remover"><i class="fa-solid fa-trash-can"></i></button>
             </div>`).join('');
         finalizeBtn.href = waLink();
+        emailBtn.href = mailLink();
     }
 
     /* ---------- qty/remover dentro do drawer ---------- */
