@@ -248,3 +248,131 @@
         font-size: 1.9rem;
     }
 }
+
+/* ==================== CATÁLOGO (itens da categoria) ==================== */
+.catalog {
+    padding: 76px 0;
+    background: var(--white);
+}
+
+.catalog .cat-head {
+    text-align: center;
+    margin-bottom: 42px;
+}
+
+.catalog .cat-head h2 {
+    font-size: clamp(1.7rem, 3vw, 2.2rem);
+}
+
+.catalog .cat-head p {
+    color: var(--muted-text);
+    margin-top: 10px;
+}
+
+.cat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 22px;
+}
+
+.cat-item {
+    border: 1px solid #ece9e2;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+
+.cat-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.cat-item-thumb {
+    height: 150px;
+    overflow: hidden;
+    background: var(--cream);
+}
+
+.cat-item-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s var(--ease-out);
+}
+
+.cat-item:hover .cat-item-thumb img {
+    transform: scale(1.06);
+}
+
+.cat-item-body {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+.cat-item-body h3 {
+    font-size: 1rem;
+    color: var(--dark-text);
+}
+
+.cat-item-body p {
+    font-size: 0.82rem;
+    color: var(--muted-text);
+    flex: 1;
+}
+
+.cat-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.cat-qty {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid #dcd8ce;
+    border-radius: 999px;
+    padding: 4px;
+}
+
+.cat-qty button {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: none;
+    background: var(--cream);
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    color: var(--primary-green);
+}
+
+.cat-qty button:hover {
+    background: var(--primary-green);
+    color: var(--white);
+}
+
+.cat-qty-val {
+    min-width: 18px;
+    text-align: center;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.cat-item .add-to-order {
+    flex: 1;
+    padding: 11px 12px;
+    font-size: 0.8rem;
+}
+
+.add-to-order.added {
+    background: linear-gradient(135deg, var(--gold-light), var(--gold)) !important;
+    color: var(--white) !important;
+}

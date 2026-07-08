@@ -118,12 +118,93 @@
                     <li><i class="fa-solid fa-circle-check"></i> Itens pensados para o dia a dia em campo</li>
                 </ul>
                 <div class="product-actions">
-                    <a href="https://wa.me/5516991926696?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Varetas%20Brasil%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." target="_blank" rel="noopener" class="btn btn-primary">
-                        <i class="fa-brands fa-whatsapp"></i> Solicitar orçamento
+                    <a href="#catalogo" class="btn btn-primary">
+                        <i class="fa-solid fa-bag-shopping"></i> Ver modelos e montar pedido
                     </a>
                     <a href="index.html#produtos" class="btn btn-outline">
                         <i class="fa-solid fa-arrow-left"></i> Voltar aos produtos
                     </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CATÁLOGO DE ITENS -->
+    <section class="catalog" id="catalogo">
+        <div class="container">
+            <div class="cat-head reveal">
+                <div class="section-subtitle" style="justify-content:center;">Catálogo</div>
+                <h2>Modelos disponíveis</h2>
+                <p>Escolha os itens, ajuste a quantidade e adicione ao pedido. No fim, é só finalizar pelo WhatsApp.</p>
+            </div>
+            <div class="cat-grid">
+                <div class="cat-item reveal">
+                    <div class="cat-item-thumb"><img src="img/produto-acessorios.jpg" alt="Conector / Emenda" loading="lazy"></div>
+                    <div class="cat-item-body">
+                        <h3>Conector / Emenda</h3>
+                        <p>União de varetas</p>
+                        <div class="cat-item-actions">
+                            <div class="cat-qty">
+                                <button type="button" data-qact="dec" aria-label="Diminuir">&minus;</button>
+                                <span class="cat-qty-val">1</span>
+                                <button type="button" data-qact="inc" aria-label="Aumentar">+</button>
+                            </div>
+                            <button type="button" class="btn btn-primary add-to-order" data-id="acessorios-0" data-name="Conector / Emenda">
+                                <i class="fa-solid fa-plus"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="cat-item reveal">
+                    <div class="cat-item-thumb"><img src="img/produto-acessorios.jpg" alt="Adaptador de ponta" loading="lazy"></div>
+                    <div class="cat-item-body">
+                        <h3>Adaptador de ponta</h3>
+                        <p>Troca rápida de ponteiras</p>
+                        <div class="cat-item-actions">
+                            <div class="cat-qty">
+                                <button type="button" data-qact="dec" aria-label="Diminuir">&minus;</button>
+                                <span class="cat-qty-val">1</span>
+                                <button type="button" data-qact="inc" aria-label="Aumentar">+</button>
+                            </div>
+                            <button type="button" class="btn btn-primary add-to-order" data-id="acessorios-1" data-name="Adaptador de ponta">
+                                <i class="fa-solid fa-plus"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="cat-item reveal">
+                    <div class="cat-item-thumb"><img src="img/produto-acessorios.jpg" alt="Manivela" loading="lazy"></div>
+                    <div class="cat-item-body">
+                        <h3>Manivela</h3>
+                        <p>Acionamento manual</p>
+                        <div class="cat-item-actions">
+                            <div class="cat-qty">
+                                <button type="button" data-qact="dec" aria-label="Diminuir">&minus;</button>
+                                <span class="cat-qty-val">1</span>
+                                <button type="button" data-qact="inc" aria-label="Aumentar">+</button>
+                            </div>
+                            <button type="button" class="btn btn-primary add-to-order" data-id="acessorios-2" data-name="Manivela">
+                                <i class="fa-solid fa-plus"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="cat-item reveal">
+                    <div class="cat-item-thumb"><img src="img/produto-acessorios.jpg" alt="Contrapino" loading="lazy"></div>
+                    <div class="cat-item-body">
+                        <h3>Contrapino</h3>
+                        <p>Fixação segura</p>
+                        <div class="cat-item-actions">
+                            <div class="cat-qty">
+                                <button type="button" data-qact="dec" aria-label="Diminuir">&minus;</button>
+                                <span class="cat-qty-val">1</span>
+                                <button type="button" data-qact="inc" aria-label="Aumentar">+</button>
+                            </div>
+                            <button type="button" class="btn btn-primary add-to-order" data-id="acessorios-3" data-name="Contrapino">
+                                <i class="fa-solid fa-plus"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -155,17 +236,6 @@
                     <p>Feitos para o sistema Varetas Brasil.</p>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="product-cta">
-        <div class="container">
-            <h2 class="reveal">Precisa de mais informações?</h2>
-            <p class="reveal">Fale com nossa equipe técnica e receba orientação para escolher a melhor solução para o seu serviço.</p>
-            <a href="https://wa.me/5516991926696?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Varetas%20Brasil%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." target="_blank" rel="noopener" class="btn btn-primary reveal">
-                <i class="fa-brands fa-whatsapp"></i> Falar no WhatsApp
-            </a>
         </div>
     </section>
 
@@ -257,6 +327,7 @@
     </button>
 
     <script src="js/main.js"></script>
+    <script src="js/cart.js"></script>
 </body>
 
 </html>
