@@ -376,3 +376,23 @@
     background: linear-gradient(135deg, var(--gold-light), var(--gold)) !important;
     color: var(--white) !important;
 }
+
+/* seletor de tamanho no card do catálogo */
+.cat-size {
+    width: 100%;
+    margin-top: 4px;
+    padding: 9px 12px;
+    border: 1px solid #dcd8ce;
+    border-radius: var(--radius-sm);
+    background: var(--white);
+    font-family: var(--font-main);
+    font-size: 0.85rem;
+    color: var(--dark-text);
+    cursor: pointer;
+    transition: border-color 0.25s ease;
+}
+
+.cat-size:focus {
+    outline: none;
+    border-color: var(--gold);
+}

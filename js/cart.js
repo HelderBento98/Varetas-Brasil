@@ -119,10 +119,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', e => {
         const add = e.target.closest('.add-to-order'); if (!add) return;
         e.preventDefault();
-        const id = add.dataset.id, name = add.dataset.name;
-        let q = 1;
+        let id = add.dataset.id, name = add.dataset.name;
+        let q = 1, size = '';
         const card = add.closest('.cat-item');
-        if (card) { const v = card.querySelector('.cat-qty-val'); if (v) q = parseInt(v.textContent, 10) || 1; }
+        if (card) {
+            const v = card.querySelector('.cat-qty-val'); if (v) q = parseInt(v.textContent, 10) || 1;
+            const sel = card.querySelector('.cat-size'); if (sel) size = sel.value;
+        }
+        if (size) { name += ' — ' + size; id += '-' + size.replace(/[^a-z0-9]/gi, ''); }
         const it = cart.find(x => x.id === id);
         if (it) it.qty += q; else cart.push({ id, name, qty: q });
         save(); render(); openDrawer();
