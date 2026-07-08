@@ -252,7 +252,7 @@
 /* ==================== CATÁLOGO (itens da categoria) ==================== */
 .catalog {
     padding: 76px 0;
-    background: var(--white);
+    background: #efe9df;
 }
 
 .catalog .cat-head {
@@ -276,10 +276,11 @@
 }
 
 .cat-item {
-    border: 1px solid #ece9e2;
+    border: 1px solid #e5ded1;
     border-radius: var(--radius);
     overflow: hidden;
     background: var(--white);
+    box-shadow: var(--shadow-sm);
     display: flex;
     flex-direction: column;
     transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
@@ -293,7 +294,8 @@
 .cat-item-thumb {
     height: 160px;
     overflow: hidden;
-    background: var(--cream);
+    background: var(--white);
+    border-bottom: 1px solid #f0ece4;
     display: flex;
     align-items: center;
     justify-content: center;
