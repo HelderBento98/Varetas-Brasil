@@ -276,10 +276,10 @@
 }
 
 .cat-item {
-    border: 1px solid #e3dbcb;
+    border: 1px solid #eae5da;
     border-radius: var(--radius);
     overflow: hidden;
-    background: #eee6d6;
+    background: #f6f6f4;
     box-shadow: var(--shadow-sm);
     display: flex;
     flex-direction: column;
@@ -294,8 +294,8 @@
 .cat-item-thumb {
     height: 160px;
     overflow: hidden;
-    background: #eee6d6;
-    border-bottom: 1px solid #e3dbcb;
+    background: #f4efe6;
+    border-bottom: 1px solid #ece7dd;
     display: flex;
     align-items: center;
     justify-content: center;
