@@ -7,7 +7,10 @@
   "use strict";
 
   var CARDS = window.CARDS || [];
-  var COLORS = ["#2b56a6", "#6f9be0", "#3f9d8f", "#c9a86a", "#b3719d", "#7d8ac2", "#d9756b", "#5aa9d6", "#8ec07c", "#e0a45e"];
+  // tons de cinza (do claro ao escuro) para diferenciar participantes
+  var COLORS = ["#ffffff", "#b9bec4", "#8a9096", "#5f656b", "#e2e5e9", "#a0a6ad", "#767c83", "#4c5157", "#cfd3d8", "#6f757c"];
+  var SAVE_KEY = "bb_game_v1";
+  var PLAYERS_KEY = "bb_players_v1";
 
   // ---------- Estado ----------
   var S = {
@@ -35,6 +38,8 @@
     var scr = document.querySelectorAll(".screen");
     for (var i = 0; i < scr.length; i++) scr[i].classList.remove("is-active");
     $(screenId).classList.add("is-active");
+    if (screenId !== "study-card") document.body.classList.remove("name-hidden");
+    if (screenId === "home") refreshContinue();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -42,8 +47,13 @@
   //  HOME
   // =====================================================================
   document.querySelectorAll(".mode-card").forEach(function (b) {
-    b.addEventListener("click", function () { openSetup(b.getAttribute("data-mode")); });
+    b.addEventListener("click", function () {
+      var m = b.getAttribute("data-mode");
+      if (m === "estudo") openStudy(); else openSetup(m);
+    });
   });
+  $("continue-resume").addEventListener("click", resumeGame);
+  $("continue-discard").addEventListener("click", function () { clearSave(); });
   document.querySelectorAll("[data-go]").forEach(function (b) {
     b.addEventListener("click", function () { show(b.getAttribute("data-go")); });
   });
@@ -63,6 +73,17 @@
     S.mode = mode;
     S.players = [];
     S.roundsSetting = 10;
+    // relembra os últimos participantes usados
+    if (MODE_META[mode].needsPlayers) {
+      try {
+        var last = JSON.parse(localStorage.getItem(PLAYERS_KEY) || "[]");
+        if (last && last.length) {
+          S.players = last.slice(0, 10).map(function (name, i) {
+            return { name: name, color: COLORS[i % COLORS.length], score: 0 };
+          });
+        }
+      } catch (e) {}
+    }
     var m = MODE_META[mode];
     $("setup-title").textContent = m.title;
     $("setup-sub").textContent = m.sub;
@@ -138,6 +159,9 @@
   //  JOGO
   // =====================================================================
   function startGame() {
+    if (MODE_META[S.mode].needsPlayers) {
+      try { localStorage.setItem(PLAYERS_KEY, JSON.stringify(S.players.map(function (p) { return p.name; }))); } catch (e) {}
+    }
     if (S.mode === "solo") S.players = [{ name: "Você", color: COLORS[0], score: 0 }];
     S.players.forEach(function (p) { p.score = 0; p.hits = 0; });
 
@@ -213,6 +237,7 @@
 
     // ações
     renderActions(total);
+    saveGame();
   }
 
   function renderActions(total) {
@@ -287,14 +312,15 @@
   // sair do jogo
   $("quit-game").addEventListener("click", function () {
     if (S.played > 0 || S.shown > 1) {
-      confirmModal("Sair da partida?", "O placar atual será perdido.", "Sair", function () { show("home"); });
-    } else { show("home"); }
+      confirmModal("Sair da partida?", "Ela fica salva para você continuar depois pela tela inicial.", "Sair", function () { show("home"); });
+    } else { clearSave(); show("home"); }
   });
 
   // =====================================================================
   //  RESULTADO
   // =====================================================================
   function endGame() {
+    clearSave();
     var ranked = S.players.slice().sort(function (a, b) { return b.score - a.score; });
     var maxCards = S.mode === "pvp" ? (S.limit ? S.limit / S.players.length : "—") : S.played;
 
@@ -329,6 +355,113 @@
   }
 
   $("play-again").addEventListener("click", function () { openSetup(S.mode); });
+
+  // =====================================================================
+  //  SALVAR / CONTINUAR PARTIDA
+  // =====================================================================
+  function saveGame() {
+    if (!S.mode || S.mode === "estudo" || !S.card) return;
+    try {
+      localStorage.setItem(SAVE_KEY, JSON.stringify({
+        mode: S.mode, players: S.players, roundsSetting: S.roundsSetting,
+        deck: S.deck, deckPos: S.deckPos, limit: S.limit, played: S.played,
+        turn: S.turn, cardIdx: CARDS.indexOf(S.card), shown: S.shown, phase: S.phase
+      }));
+    } catch (e) {}
+  }
+  function loadSave() { try { return JSON.parse(localStorage.getItem(SAVE_KEY)); } catch (e) { return null; } }
+  function clearSave() { try { localStorage.removeItem(SAVE_KEY); } catch (e) {} refreshContinue(); }
+
+  function refreshContinue() {
+    var banner = $("continue-banner"); if (!banner) return;
+    var s = loadSave();
+    if (s && s.cardIdx != null && s.cardIdx >= 0 && MODE_META[s.mode]) {
+      banner.hidden = false;
+      var where = "carta " + (s.played + 1) + (s.limit ? " de " + s.limit : "");
+      $("continue-info").textContent = MODE_META[s.mode].title + " · " + where;
+    } else { banner.hidden = true; }
+  }
+
+  function resumeGame() {
+    var s = loadSave(); if (!s) return refreshContinue();
+    S.mode = s.mode; S.players = s.players; S.roundsSetting = s.roundsSetting;
+    S.deck = s.deck; S.deckPos = s.deckPos; S.limit = s.limit; S.played = s.played;
+    S.turn = s.turn; S.shown = s.shown; S.phase = s.phase; S.card = CARDS[s.cardIdx];
+    $("game-title").textContent = MODE_META[S.mode].title;
+    $("game-sub").textContent = S.mode === "solo" ? "Continuando…" : S.players.length + " participantes";
+    var banner = $("turn-banner");
+    if (S.mode === "pvp") {
+      banner.hidden = false;
+      var p = S.players[S.turn];
+      $("turn-dot").style.background = p.color; $("turn-name").textContent = p.name;
+    } else { banner.hidden = true; }
+    show("game"); renderCard();
+  }
+
+  // =====================================================================
+  //  MODO ESTUDO
+  // =====================================================================
+  var studyList = CARDS.map(function (c, i) { return { i: i, n: c.n }; })
+    .sort(function (a, b) { return a.n.localeCompare(b.n, "pt"); });
+  var studyOrder = studyList.map(function (x) { return x.i; }); // ordem de navegação (índices globais)
+  var studyPos = 0;      // posição atual em studyOrder
+  var studyHideName = false;
+
+  function openStudy() {
+    $("study-input").value = "";
+    renderStudyGrid("");
+    show("study");
+  }
+
+  function renderStudyGrid(filter) {
+    filter = (filter || "").trim().toLowerCase();
+    var grid = $("study-grid"); grid.innerHTML = "";
+    var shown = 0;
+    studyList.forEach(function (item) {
+      if (filter && item.n.toLowerCase().indexOf(filter) === -1) return;
+      shown++;
+      var b = el("button", "study-item");
+      b.innerHTML = '<div class="si-name">' + esc(item.n) + '</div><div class="si-sub">' + CARDS[item.i].c.length + ' dicas</div>';
+      b.addEventListener("click", function () { openStudyCard(item.i); });
+      grid.appendChild(b);
+    });
+    $("study-count").textContent = shown + (shown === 1 ? " personagem" : " personagens");
+    if (!shown) grid.innerHTML = '<p class="empty-hint" style="grid-column:1/-1">Nenhum personagem encontrado.</p>';
+  }
+
+  $("study-input").addEventListener("input", function () { renderStudyGrid(this.value); });
+
+  function openStudyCard(globalIdx) {
+    studyPos = studyOrder.indexOf(globalIdx);
+    renderStudyCard();
+    show("study-card");
+  }
+
+  function renderStudyCard() {
+    var card = CARDS[studyOrder[studyPos]];
+    $("study-pos").textContent = (studyPos + 1) + " / " + studyOrder.length;
+    $("study-refcount").textContent = card.c.length + " dicas";
+    document.body.classList.toggle("name-hidden", studyHideName);
+    $("study-eye").textContent = studyHideName ? "👁 Mostrar nome" : "🙈 Ocultar nome";
+
+    $("study-reveal").innerHTML =
+      '<div class="reveal-box"><div class="lbl">Personagem</div><div class="name">' + esc(card.n) + "</div></div>";
+
+    var ul = $("study-clues"); ul.innerHTML = "";
+    card.c.forEach(function (cl, i) {
+      var li = el("li", "clue");
+      var ref = cl[1] && cl[1] !== "—" ? '<span class="clue-ref">' + esc(cl[1]) + "</span>" : "";
+      li.innerHTML = '<span class="clue-n">' + (i + 1) + "</span>" +
+        '<span class="clue-body"><p>' + esc(cl[0]) + "</p>" + ref + "</span>";
+      ul.appendChild(li);
+    });
+  }
+
+  $("study-back").addEventListener("click", function () { document.body.classList.remove("name-hidden"); show("study"); });
+  $("study-prev").addEventListener("click", function () { studyPos = (studyPos - 1 + studyOrder.length) % studyOrder.length; renderStudyCard(); });
+  $("study-next").addEventListener("click", function () { studyPos = (studyPos + 1) % studyOrder.length; renderStudyCard(); });
+  $("study-shuffle").addEventListener("click", function () { studyPos = Math.floor(Math.random() * studyOrder.length); renderStudyCard(); });
+  $("study-eye").addEventListener("click", function () { studyHideName = !studyHideName; renderStudyCard(); });
 
   // =====================================================================
   //  MODAIS (regras / sobre / confirmar)
@@ -386,5 +519,8 @@
   // total de cartas na home
   var cnt = document.querySelector(".hero .eyebrow");
   if (cnt) cnt.textContent = CARDS.length + " personagens";
+
+  // partida salva?
+  refreshContinue();
 
 })();

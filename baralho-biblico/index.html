@@ -33,6 +33,17 @@
         <p>Quanto antes você acertar, mais pontos ganha. Escolha um modo de jogo.</p>
       </div>
 
+      <div class="continue" id="continue-banner" hidden>
+        <button class="continue-main" id="continue-resume">
+          <span class="continue-ico">⏵</span>
+          <span>
+            <h3>Continuar partida</h3>
+            <p id="continue-info"></p>
+          </span>
+        </button>
+        <button class="continue-x" id="continue-discard" aria-label="Descartar partida salva">×</button>
+      </div>
+
       <div class="modes">
         <button class="mode-card" data-mode="solo">
           <span class="mode-ico">🎯</span>
@@ -55,6 +66,14 @@
           <span>
             <h3>Individual (passa e joga)</h3>
             <p>Cada um na sua vez, no mesmo aparelho. Vence quem fizer mais pontos.</p>
+          </span>
+          <span class="arrow">→</span>
+        </button>
+        <button class="mode-card" data-mode="estudo">
+          <span class="mode-ico">📖</span>
+          <span>
+            <h3>Modo estudo</h3>
+            <p>Veja todas as dicas e aprenda os personagens, sem pontuação.</p>
           </span>
           <span class="arrow">→</span>
         </button>
@@ -150,6 +169,43 @@
       <div class="btn-row two" style="margin-top:20px;">
         <button class="btn btn-ghost" data-go="home">Início</button>
         <button class="btn btn-primary" id="play-again">Jogar de novo</button>
+      </div>
+    </section>
+
+    <!-- ================= ESTUDO — LISTA ================= -->
+    <section id="study" class="screen">
+      <div class="topbar">
+        <button class="btn-back" data-go="home">←</button>
+        <div><h2>Modo estudo</h2><div class="sub">Toque num personagem para ver as dicas</div></div>
+      </div>
+      <div class="study-search">
+        <input class="input" id="study-input" type="text" placeholder="Buscar personagem…" autocomplete="off">
+      </div>
+      <p class="study-count" id="study-count"></p>
+      <div class="study-grid" id="study-grid"></div>
+    </section>
+
+    <!-- ================= ESTUDO — DETALHE ================= -->
+    <section id="study-card" class="screen">
+      <div class="topbar">
+        <button class="btn-back" id="study-back">←</button>
+        <div><h2 id="study-pos"></h2><div class="sub">Modo estudo</div></div>
+        <button class="study-toggle spacer" id="study-eye">🙈 Ocultar nome</button>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-kicker">Personagem</span>
+          <span class="card-points" id="study-refcount"></span>
+        </div>
+        <div id="study-reveal"></div>
+        <ul class="clues" id="study-clues"></ul>
+      </div>
+
+      <div class="study-nav">
+        <button class="btn btn-ghost" id="study-prev">← Anterior</button>
+        <button class="btn btn-ghost" id="study-shuffle" style="flex:none;width:auto;padding:0 18px;">🔀</button>
+        <button class="btn btn-primary" id="study-next">Próximo →</button>
       </div>
     </section>
 
