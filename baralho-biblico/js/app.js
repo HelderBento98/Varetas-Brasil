@@ -24,7 +24,11 @@
     turn: 0,             // jogador da vez (pvp)
     card: null,          // carta atual
     shown: 1,            // nº de dicas reveladas
-    phase: "clue"        // 'clue' | 'revealed' | 'grupo-who' | 'grupo-none'
+    phase: "clue",       // 'clue' | 'revealed' | 'grupo-who' | 'grupo-none' | 'answered'
+    inputMode: "self",   // 'self' (marca sozinho) | 'type' (digita o nome)
+    feedback: "",        // mensagem após um palpite digitado
+    feedbackType: "",    // 'ok' | 'err'
+    answerResult: null   // resultado de um palpite digitado {playerIdx, pts, correct}
   };
 
   // ---------- Utilitários ----------
@@ -96,6 +100,12 @@
     chips.querySelectorAll(".chip").forEach(function (c) { c.classList.toggle("is-on", c.getAttribute("data-rounds") === "10"); });
     updateRoundsHint();
 
+    // modo de resposta (só faz sentido em sozinho e individual)
+    S.inputMode = "self";
+    $("answer-panel").hidden = (mode === "grupo");
+    $("answer-chips").querySelectorAll(".chip").forEach(function (c) { c.classList.toggle("is-on", c.getAttribute("data-answer") === "self"); });
+    updateAnswerHint();
+
     renderPlayers();
     updateStartBtn();
     show("setup");
@@ -115,6 +125,19 @@
     c.classList.add("is-on");
     S.roundsSetting = parseInt(c.getAttribute("data-rounds"), 10);
     updateRoundsHint();
+  });
+
+  function updateAnswerHint() {
+    $("answer-hint").textContent = S.inputMode === "type"
+      ? "Você digita o nome; se errar, aparece a próxima dica (valendo menos)."
+      : "Você mesmo confere e marca se acertou.";
+  }
+  $("answer-chips").addEventListener("click", function (e) {
+    var c = e.target.closest(".chip"); if (!c) return;
+    $("answer-chips").querySelectorAll(".chip").forEach(function (x) { x.classList.remove("is-on"); });
+    c.classList.add("is-on");
+    S.inputMode = c.getAttribute("data-answer");
+    updateAnswerHint();
   });
 
   function addPlayer() {
@@ -186,6 +209,8 @@
     S.card = CARDS[S.deck[S.deckPos++]];
     S.shown = 1;
     S.phase = "clue";
+    S.feedback = "";
+    S.answerResult = null;
 
     // vez do jogador (pvp)
     var banner = $("turn-banner");
@@ -228,7 +253,7 @@
 
     // revelação do nome
     var slot = $("reveal-slot"); slot.innerHTML = "";
-    var revealed = S.phase === "revealed" || S.phase === "grupo-who" || S.phase === "grupo-none";
+    var revealed = S.phase === "revealed" || S.phase === "grupo-who" || S.phase === "grupo-none" || S.phase === "answered";
     if (revealed) {
       var box = el("div", "reveal-box");
       box.innerHTML = '<div class="lbl">O personagem é</div><div class="name">' + esc(S.card.n) + "</div>";
@@ -243,7 +268,21 @@
   function renderActions(total) {
     var box = $("card-actions"); box.innerHTML = "";
 
-    if (S.phase === "clue") {
+    if (S.phase === "clue" && S.inputMode === "type" && S.mode !== "grupo") {
+      // ----- Digitar o nome -----
+      if (S.feedback) box.appendChild(el("p", "guess-feedback " + (S.feedbackType || "err"), esc(S.feedback)));
+      var row = el("div", "guess-row");
+      row.innerHTML = '<input class="input" id="guess-input" type="text" autocomplete="off" autocapitalize="words" placeholder="Quem é o personagem?">';
+      box.appendChild(row);
+      box.appendChild(btn("btn btn-primary", "Responder  ·  vale " + points(S.shown), submitGuess));
+      box.appendChild(btn("btn btn-quiet", "Não sei — revelar", giveUp));
+      setTimeout(function () {
+        var gi = $("guess-input");
+        if (gi) { gi.focus(); gi.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); submitGuess(); } }); }
+      }, 40);
+    }
+
+    else if (S.phase === "clue") {
       if (S.shown < total) {
         box.appendChild(btn("btn btn-ghost", "Próxima dica  ·  cai para " + points(S.shown + 1) + " pts", function () {
           S.shown++; renderCard();
@@ -257,6 +296,18 @@
       } else {
         box.appendChild(btn("btn btn-primary", "Revelar resposta", function () { S.phase = "revealed"; renderCard(); }));
       }
+    }
+
+    else if (S.phase === "answered") {
+      var r = S.answerResult || { pts: 0, correct: false };
+      if (r.correct) {
+        var who = S.mode === "pvp" ? " para " + S.players[S.turn].name : "";
+        box.appendChild(el("p", "guess-feedback ok", "✓ Acertou! +" + r.pts + who));
+      } else {
+        box.appendChild(el("p", "guess-feedback err", "0 ponto nesta carta."));
+      }
+      var last = S.limit && (S.played + 1) >= S.limit;
+      box.appendChild(btn("btn btn-primary", last ? "Ver resultado →" : "Próxima carta →", function () { award(r.playerIdx, r.pts); }));
     }
 
     else if (S.phase === "revealed") { // solo / pvp
@@ -308,6 +359,51 @@
 
   function btn(cls, label, fn) { var b = el("button", cls, label); b.addEventListener("click", fn); return b; }
   function hintLine(txt) { return el("p", "score-title", esc(txt)); }
+
+  // ----- Digitar o nome: verificação -----
+  function normalize(s) {
+    return String(s).toLowerCase()
+      .normalize("NFD").replace(/[̀-ͯ]/g, "")   // remove acentos
+      .replace(/[^a-z0-9\s]/g, " ")                        // remove pontuação
+      .replace(/\s+/g, " ").trim()
+      .replace(/^(a|o|as|os)\s+/, "");                     // artigo inicial
+  }
+  function acceptedAnswers(card) {
+    var full = normalize(card.n);
+    var beforeComma = normalize(card.n.split(",")[0]);
+    var set = [full, beforeComma];
+    var fw = beforeComma.split(" ")[0];
+    if (fw.length >= 3) set.push(fw);                      // 1º nome (ex.: "joao", "filipe", "maria")
+    if (card.n === "A MULHER SAMARITANA") set.push("samaritana", "mulher samaritana");
+    return set;
+  }
+  function isCorrect(guess, card) {
+    var g = normalize(guess);
+    return !!g && acceptedAnswers(card).indexOf(g) !== -1;
+  }
+
+  function submitGuess() {
+    var gi = $("guess-input"); if (!gi) return;
+    var val = gi.value; if (!val.trim()) { gi.focus(); return; }
+    if (isCorrect(val, S.card)) {
+      grantAndReveal(scoreTarget(), points(S.shown), true);
+    } else if (S.shown < S.card.c.length) {
+      S.shown++;
+      S.feedback = "❌ Não é “" + val.trim() + "”. Mais uma dica…";
+      S.feedbackType = "err";
+      renderCard();
+    } else {
+      S.feedback = "";
+      grantAndReveal(null, 0, false);                      // acabaram as dicas
+    }
+  }
+  function giveUp() { S.feedback = ""; grantAndReveal(null, 0, false); }
+
+  function grantAndReveal(playerIdx, pts, correct) {
+    S.answerResult = { playerIdx: playerIdx, pts: pts, correct: correct };
+    S.phase = "answered";
+    renderCard();
+  }
 
   // sair do jogo
   $("quit-game").addEventListener("click", function () {
@@ -365,7 +461,8 @@
       localStorage.setItem(SAVE_KEY, JSON.stringify({
         mode: S.mode, players: S.players, roundsSetting: S.roundsSetting,
         deck: S.deck, deckPos: S.deckPos, limit: S.limit, played: S.played,
-        turn: S.turn, cardIdx: CARDS.indexOf(S.card), shown: S.shown, phase: S.phase
+        turn: S.turn, cardIdx: CARDS.indexOf(S.card), shown: S.shown, phase: S.phase,
+        inputMode: S.inputMode, answerResult: S.answerResult, feedback: S.feedback, feedbackType: S.feedbackType
       }));
     } catch (e) {}
   }
@@ -387,6 +484,8 @@
     S.mode = s.mode; S.players = s.players; S.roundsSetting = s.roundsSetting;
     S.deck = s.deck; S.deckPos = s.deckPos; S.limit = s.limit; S.played = s.played;
     S.turn = s.turn; S.shown = s.shown; S.phase = s.phase; S.card = CARDS[s.cardIdx];
+    S.inputMode = s.inputMode || "self"; S.answerResult = s.answerResult || null;
+    S.feedback = s.feedback || ""; S.feedbackType = s.feedbackType || "";
     $("game-title").textContent = MODE_META[S.mode].title;
     $("game-sub").textContent = S.mode === "solo" ? "Continuando…" : S.players.length + " participantes";
     var banner = $("turn-banner");

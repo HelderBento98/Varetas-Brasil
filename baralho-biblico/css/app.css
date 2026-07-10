@@ -292,6 +292,13 @@ button { cursor: pointer; border: none; background: none; }
 
 .card-actions { margin-top: 18px; display: grid; gap: 11px; }
 
+/* digitar a resposta */
+.guess-row { margin-bottom: 2px; }
+.guess-row .input { text-align: center; font-family: var(--font-display); font-size: 1.05rem; }
+.guess-feedback { text-align: center; font-size: .92rem; font-weight: 600; padding: 2px 0 8px; animation: pop .3s var(--spring); }
+.guess-feedback.err { color: var(--muted); }
+.guess-feedback.ok { color: var(--text); }
+
 /* pontuação: escolher quem acertou */
 .score-title { text-align: center; color: var(--muted); font-size: .88rem; margin: 4px 0 12px; }
 .who-list { display: grid; gap: 10px; }
