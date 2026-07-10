@@ -251,6 +251,14 @@
       ul.appendChild(li);
     }
 
+    // resposta visível só para o narrador (modo grupo, enquanto lê as dicas)
+    var nslot = $("narrator-slot");
+    if (S.mode === "grupo" && S.phase === "clue") {
+      nslot.innerHTML = '<div class="narrator-badge"><span class="nb-lbl">🔑 Resposta — só o narrador vê</span><span class="nb-name">' + esc(S.card.n) + "</span></div>";
+    } else {
+      nslot.innerHTML = "";
+    }
+
     // revelação do nome
     var slot = $("reveal-slot"); slot.innerHTML = "";
     var revealed = S.phase === "revealed" || S.phase === "grupo-who" || S.phase === "grupo-none" || S.phase === "answered";
