@@ -1,0 +1,14 @@
+{
+  "name": "Baralho Bíblico",
+  "short_name": "Baralho Bíblico",
+  "description": "Adivinhe o personagem bíblico pelas dicas. Modos sozinho, em grupo e individual.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0e1116",
+  "theme_color": "#0e1116",
+  "icons": [
+    { "src": "icon.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any maskable" }
+  ]
+}

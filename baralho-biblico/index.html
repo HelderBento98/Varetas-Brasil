@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Baralho Bíblico — Adivinhe o personagem</title>
+  <meta name="description" content="Jogo do Baralho Bíblico: adivinhe o personagem pelas dicas. Modos sozinho, em grupo e individual. 97 personagens da Bíblia.">
+  <meta name="theme-color" content="#0e1116">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <div class="app">
+
+    <!-- ================= HOME ================= -->
+    <section id="home" class="screen is-active">
+      <div class="brand">
+        <div class="brand-mark">BB</div>
+        <div class="brand-txt">
+          <h1>Baralho Bíblico</h1>
+          <p>Adivinhe o personagem pelas dicas</p>
+        </div>
+      </div>
+
+      <div class="hero">
+        <span class="eyebrow">97 personagens</span>
+        <h2>Das dicas difíceis<br>às <span class="accent">mais fáceis</span></h2>
+        <p>Quanto antes você acertar, mais pontos ganha. Escolha um modo de jogo.</p>
+      </div>
+
+      <div class="modes">
+        <button class="mode-card" data-mode="solo">
+          <span class="mode-ico">🎯</span>
+          <span>
+            <h3>Sozinho</h3>
+            <p>Treine e desafie a si mesmo, carta por carta.</p>
+          </span>
+          <span class="arrow">→</span>
+        </button>
+        <button class="mode-card" data-mode="grupo">
+          <span class="mode-ico">👥</span>
+          <span>
+            <h3>Em grupo / equipes</h3>
+            <p>Um narrador lê as dicas; as equipes disputam os pontos.</p>
+          </span>
+          <span class="arrow">→</span>
+        </button>
+        <button class="mode-card" data-mode="pvp">
+          <span class="mode-ico">🔁</span>
+          <span>
+            <h3>Individual (passa e joga)</h3>
+            <p>Cada um na sua vez, no mesmo aparelho. Vence quem fizer mais pontos.</p>
+          </span>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+
+      <div class="home-links">
+        <button id="link-rules">Como jogar</button>
+        <button id="link-about">Sobre</button>
+      </div>
+
+      <p class="foot">Baseado no baralho físico “Baralho Bíblico”.</p>
+    </section>
+
+    <!-- ================= SETUP ================= -->
+    <section id="setup" class="screen">
+      <div class="topbar">
+        <button class="btn-back" data-go="home">←</button>
+        <div>
+          <h2 id="setup-title">Configurar jogo</h2>
+          <div class="sub" id="setup-sub"></div>
+        </div>
+      </div>
+
+      <div class="panel" id="players-panel">
+        <h4 id="players-label">Participantes</h4>
+        <div class="add-row">
+          <input class="input" id="player-input" type="text" placeholder="Nome do participante ou equipe" maxlength="24" autocomplete="off">
+          <button class="btn-ghost" id="add-player" style="width:auto;padding:0 18px;border-radius:12px;">+ Add</button>
+        </div>
+        <div class="player-list" id="player-list"></div>
+        <p class="empty-hint" id="players-empty">Adicione pelo menos 2 participantes para começar.</p>
+      </div>
+
+      <div class="panel">
+        <h4>Quantas cartas nesta partida?</h4>
+        <div class="chips" id="rounds-chips">
+          <button class="chip" data-rounds="5">5</button>
+          <button class="chip is-on" data-rounds="10">10</button>
+          <button class="chip" data-rounds="15">15</button>
+          <button class="chip" data-rounds="20">20</button>
+          <button class="chip" data-rounds="0">Livre</button>
+        </div>
+        <p class="empty-hint" id="rounds-hint" style="text-align:left;padding-bottom:0;"></p>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="start-game" disabled>Começar</button>
+      </div>
+    </section>
+
+    <!-- ================= GAME ================= -->
+    <section id="game" class="screen">
+      <div class="topbar">
+        <button class="btn-back" id="quit-game">←</button>
+        <div>
+          <h2 id="game-title">Rodada</h2>
+          <div class="sub" id="game-sub"></div>
+        </div>
+      </div>
+
+      <div id="turn-banner" class="turn-banner" hidden>
+        <span class="player-dot" id="turn-dot"></span>
+        <span>Vez de <strong id="turn-name"></strong></span>
+      </div>
+
+      <div class="game-progress">
+        <span id="prog-count">Carta 1</span>
+        <span class="bar"><i id="prog-bar" style="width:0%"></i></span>
+        <span id="prog-total"></span>
+      </div>
+
+      <div class="card" id="card">
+        <div class="card-head">
+          <span class="card-kicker">Adivinhe o personagem</span>
+          <span class="card-points" id="card-points">Vale 7</span>
+        </div>
+        <ul class="clues" id="clues"></ul>
+        <div id="reveal-slot"></div>
+        <div class="card-actions" id="card-actions"></div>
+      </div>
+    </section>
+
+    <!-- ================= RESULT ================= -->
+    <section id="result" class="screen">
+      <div class="topbar">
+        <button class="btn-back" data-go="home">←</button>
+        <div><h2>Resultado</h2><div class="sub" id="result-sub"></div></div>
+      </div>
+
+      <div class="trophy" id="trophy"></div>
+      <div class="scoreboard" id="final-board"></div>
+
+      <div class="btn-row two" style="margin-top:20px;">
+        <button class="btn btn-ghost" data-go="home">Início</button>
+        <button class="btn btn-primary" id="play-again">Jogar de novo</button>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ================= MODAIS ================= -->
+  <div class="modal-back" id="modal-back">
+    <div class="modal" id="modal"></div>
+  </div>
+
+  <script src="js/cards.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
