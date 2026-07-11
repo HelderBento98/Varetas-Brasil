@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tema base do sistema (sem barra de ação). As cores reais do app
+         são definidas no Compose, em ui/theme/Theme.kt. -->
+    <style name="Theme.ServicosApp" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">#15693F</item>
+        <item name="android:windowBackground">#F6F7F9</item>
+    </style>
+</resources>
