@@ -1,0 +1,27 @@
+name: servicos_app
+description: "Marketplace que conecta prestadores de serviço e clientes."
+publish_to: "none"
+
+# Versão do app: <versão-visível>+<número-da-build>
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Ícones estilo iOS (usamos alguns na interface)
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  # Quando você tiver imagens/ícones próprios, descomente e coloque em app/assets/
+  # assets:
+  #   - assets/imagens/

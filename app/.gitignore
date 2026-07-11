@@ -1,0 +1,17 @@
+# Arquivos gerados pelo Flutter/Dart
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+pubspec.lock
+
+# Pastas de plataforma geradas por "flutter create ."
+# (deixe versionar depois que você personalizar ícone/nome do app)
+# android/
+# ios/
+
+# Editores
+.idea/
+.vscode/
+*.iml
