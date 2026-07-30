@@ -1,46 +1,40 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { CompanyProvider, useCompany } from './context/CompanyContext';
+import { StoreProvider } from './store';
+import { AuthScreen } from './screens/Auth';
+import { CompanyOnboardingScreen } from './screens/CompanyOnboarding';
+import { DashboardLayout } from './components/DashboardLayout';
 
-import { StoreProvider, useStore } from './store';
-import { Header, BottomNav } from './components/LayoutControls';
-import { HomeScreen } from './screens/Home';
-import { NovaOSScreen } from './screens/NovaOS';
-import { HistoricoScreen } from './screens/Historico';
-import { ListaOSScreen } from './screens/ListaOS';
-import { DetalhesOSScreen } from './screens/OSDetails';
-import { CalendarioScreen } from './screens/Calendario';
-import { AjustesScreen } from './screens/Ajustes';
-import { ResumoDetalhadoScreen } from './screens/ResumoDetalhado';
+function LoadingScreen() {
+  return (
+    <div className="min-h-[100dvh] w-full flex items-center justify-center bg-[#F2F2F7]">
+      <div className="w-8 h-8 border-[3px] border-gray-200 border-t-[#007AFF] rounded-full animate-spin" />
+    </div>
+  );
+}
 
-function AppContent() {
-  const { currentScreen } = useStore();
+function RootRouter() {
+  const { user, loading: authLoading } = useAuth();
+  const { activeCompany, loading: companyLoading } = useCompany();
+
+  if (authLoading) return <LoadingScreen />;
+  if (!user) return <AuthScreen />;
+  if (companyLoading) return <LoadingScreen />;
+  if (!activeCompany) return <CompanyOnboardingScreen />;
 
   return (
-    <div className="w-full max-w-[440px] mx-auto h-[100dvh] bg-[#F2F2F7] relative shadow-2xl flex flex-col font-sans overflow-hidden pb-[80px]">
-      <Header />
-      <main className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        {currentScreen === 'HOME' && <HomeScreen />}
-        {currentScreen === 'NOVA_OS' && <NovaOSScreen />}
-        {currentScreen === 'HISTORICO' && <HistoricoScreen />}
-        {currentScreen === 'LISTA_OS' && <ListaOSScreen />}
-        {currentScreen === 'DETALHES_OS' && <DetalhesOSScreen />}
-        {currentScreen === 'CALENDARIO' && <CalendarioScreen />}
-        {currentScreen === 'AJUSTES' && <AjustesScreen />}
-        {currentScreen === 'RESUMO_DETALHADO' && <ResumoDetalhadoScreen />}
-      </main>
-      <BottomNav />
-    </div>
+    <StoreProvider>
+      <DashboardLayout />
+    </StoreProvider>
   );
 }
 
 export default function App() {
   return (
-    <StoreProvider>
-      <div className="bg-gray-950 min-h-screen flex items-center justify-center">
-        <AppContent />
-      </div>
-    </StoreProvider>
+    <AuthProvider>
+      <CompanyProvider>
+        <RootRouter />
+      </CompanyProvider>
+    </AuthProvider>
   );
 }

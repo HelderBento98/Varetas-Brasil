@@ -27,7 +27,7 @@ export function HistoricoScreen() {
           {recentActivities.map((os) => (
              <div key={os.id} className="text-sm bg-gray-50/50 p-4 rounded-[16px] border border-gray-100 flex items-center justify-between">
               <div>
-                <div className="font-semibold text-[15px] text-gray-900 mb-1">{os.servico || `Ordem de Serviço ${os.id}`}</div>
+                <div className="font-semibold text-[15px] text-gray-900 mb-1">{os.servico || `Ordem de Serviço ${os.numero}`}</div>
                 <div className="text-gray-500 font-medium">{formatCurrency(os.preco)}</div>
               </div>
               <div className={`font-semibold text-xs px-3 py-1 rounded-full ${getStatusColorText(os.status).replace('text-', 'bg-').replace(']', ']/10')} ${getStatusColorText(os.status)}`}>

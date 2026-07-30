@@ -1,15 +1,21 @@
 import React, { useRef, useState } from 'react';
-import { Check, Star, X, Crown, Headset, Image as ImageIcon, Shield, ChevronRight, Database, Download, Upload, FileSpreadsheet } from 'lucide-react';
+import { Check, X, Crown, Headset, Image as ImageIcon, Shield, ChevronRight, Download, FileSpreadsheet, Users, KeyRound, Copy } from 'lucide-react';
 import { useStore } from '../store';
 
 export function AjustesScreen() {
-  const { userProfile, updateUserProfile, ordens, lembretes } = useStore();
+  const { userProfile, updateUserProfile, ordens, lembretes, members } = useStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const importInputRef = useRef<HTMLInputElement>(null);
   const [logoMenuOpen, setLogoMenuOpen] = useState(false);
   const [privacidadeOpen, setPrivacidadeOpen] = useState(false);
   const [planoOpen, setPlanoOpen] = useState(false);
   const [showConfirmCancel, setShowConfirmCancel] = useState(false);
+  const [codeCopied, setCodeCopied] = useState(false);
+
+  const handleCopyInviteCode = () => {
+    navigator.clipboard.writeText(userProfile.inviteCode);
+    setCodeCopied(true);
+    setTimeout(() => setCodeCopied(false), 2000);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateUserProfile({ [e.target.name]: e.target.value });
@@ -22,7 +28,7 @@ export function AjustesScreen() {
     }
     const header = ['ID', 'Cliente', 'Servico', 'Preco (R$)', 'Forma de Pagamento', 'Contato', 'Data', 'Status'];
     const rows = ordens.map(os => [
-      os.id,
+      os.numero,
       `"${(os.cliente || '').replace(/"/g, '""')}"`,
       `"${(os.servico || '').replace(/"/g, '""')}"`,
       os.preco.toString().replace('.', ','),
@@ -63,41 +69,6 @@ export function AjustesScreen() {
     downloadAnchor.click();
     document.body.removeChild(downloadAnchor);
     URL.revokeObjectURL(url);
-  };
-
-  const handleImportBackup = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!userProfile.planoAtivo) {
-      alert("Acesso restrito. Assine um plano para importar backups.");
-      return;
-    }
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        try {
-          const parsed = JSON.parse(event.target?.result as string);
-          if (parsed && (Array.isArray(parsed.ordens) || parsed.userProfile)) {
-            const mergedOrdens = parsed.ordens || [];
-            const mergedUserProfile = parsed.userProfile || {};
-            const mergedLembretes = parsed.lembretes || [];
-            
-            localStorage.setItem('osManagerData', JSON.stringify({
-              ordens: mergedOrdens,
-              userProfile: mergedUserProfile,
-              lembretes: mergedLembretes
-            }));
-            
-            alert('Backup importado com sucesso! O aplicativo será recarregado para aplicar as alterações.');
-            window.location.reload();
-          } else {
-            alert('Formato de backup inválido.');
-          }
-        } catch (err) {
-          alert('Erro ao processar o arquivo de backup.');
-        }
-      };
-      reader.readAsText(file);
-    }
   };
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -208,23 +179,47 @@ export function AjustesScreen() {
           <ChevronRight size={18} className="text-gray-400" />
         </button>
 
-        <button 
-          onClick={() => importInputRef.current?.click()}
-          className="flex items-center gap-3 px-4 py-3.5 hover:bg-gray-50 active:bg-gray-100 transition-colors text-left"
-        >
-          <div className="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center shrink-0">
-            <Upload size={16} className="text-teal-600" />
+      </div>
+
+      {/* Equipe / Convite */}
+      <div className="bg-white rounded-[24px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 flex flex-col min-h-0 shrink-0">
+        <div className="flex justify-center items-center mb-4 border-b border-gray-100/50 pb-2">
+          <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider text-center">Equipe</h2>
+        </div>
+
+        <div className="flex items-center gap-3 bg-gray-50 border border-gray-100 rounded-2xl p-4 mb-4">
+          <div className="w-9 h-9 rounded-full bg-purple-100 flex items-center justify-center shrink-0">
+            <KeyRound size={16} className="text-purple-600" />
           </div>
-          <span className="flex-1 font-medium text-gray-900 text-[16px]">Importar Backup</span>
-          <ChevronRight size={18} className="text-gray-400" />
-          <input 
-            type="file" 
-            accept=".json" 
-            ref={importInputRef} 
-            onChange={handleImportBackup} 
-            className="hidden" 
-          />
-        </button>
+          <div className="flex-1 min-w-0">
+            <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Código de convite</div>
+            <div className="font-bold text-gray-900 text-lg tracking-widest">{userProfile.inviteCode}</div>
+          </div>
+          <button
+            onClick={handleCopyInviteCode}
+            className="w-9 h-9 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-[#007AFF] active:scale-95 transition-all shrink-0"
+            title="Copiar código"
+          >
+            {codeCopied ? <Check size={15} className="text-[#34C759]" /> : <Copy size={15} />}
+          </button>
+        </div>
+        <p className="text-gray-400 text-xs mb-4 px-1">
+          Compartilhe este código com colegas para que eles entrem nesta empresa.
+        </p>
+
+        <div className="flex flex-col gap-2">
+          {members.map(member => (
+            <div key={member.id} className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-gray-50/60 border border-gray-100/70">
+              <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                <Users size={14} className="text-gray-500" />
+              </div>
+              <span className="flex-1 min-w-0 text-[13px] font-medium text-gray-700 truncate">{member.email || 'Usuário'}</span>
+              <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${member.role === 'owner' ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-500'}`}>
+                {member.role === 'owner' ? 'Dono' : 'Membro'}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
 
       {planoOpen && (

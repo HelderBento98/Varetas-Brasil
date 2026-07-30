@@ -123,7 +123,7 @@ ${companyName}${companyPhone ? `\n📞 ${companyPhone}` : ''}`;
       doc.text(`pelo período estipulado, oferecida por ${companyName}.`, 105, 176, { align: 'center' });
     }
 
-    doc.save(`Garantia_${os.id}.pdf`);
+    doc.save(`Garantia_${os.numero}.pdf`);
 
     setTimeout(() => {
       const msg = `Olá *${os.cliente}*, estou te enviando o certificado de garantia do seu serviço (${os.servico}). O prazo de garantia é de *${days} dias*! O PDF já foi gerado e salvo.`;
@@ -148,7 +148,7 @@ ${companyName}${companyPhone ? `\n📞 ${companyPhone}` : ''}`;
             <div className="w-8 h-8 shrink-0" />
           </div>
 
-          <div className="font-semibold text-sm text-gray-500 mb-4 uppercase tracking-wide shrink-0">Pedido #{os.id}</div>
+          <div className="font-semibold text-sm text-gray-500 mb-4 uppercase tracking-wide shrink-0">Pedido #{os.numero}</div>
 
           <div className="flex flex-col gap-5 text-[15px] text-gray-900 overflow-y-auto no-scrollbar flex-1 pb-4 pr-2">
              <div className="flex flex-col border-b border-gray-100 pb-2"><span className="text-[11px] text-gray-500 font-semibold mb-1">CLIENTE</span><span className="font-medium">{os.cliente}</span></div>

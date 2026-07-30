@@ -25,7 +25,7 @@ export function ListaOSScreen() {
     return (
       (os.cliente || '').toLowerCase().includes(term) ||
       (os.servico || '').toLowerCase().includes(term) ||
-      (os.id || '').toLowerCase().includes(term)
+      (os.numero || '').toLowerCase().includes(term)
     );
   });
 
