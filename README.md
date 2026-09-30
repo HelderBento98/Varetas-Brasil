@@ -93,3 +93,4 @@ comando acima. Depois de criar páginas novas, atualize o `sitemap.xml`.
 (incluindo "Finalizar pedido"). Fica desligado até preencher `GOOGLE_ADS_ID` e
 `GOOGLE_ADS_LABEL` (e opcionalmente `GA4_ID`) — as instruções estão no topo do arquivo.
 
+
