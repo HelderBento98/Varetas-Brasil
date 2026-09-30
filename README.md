@@ -92,3 +92,4 @@ comando acima. Depois de criar páginas novas, atualize o `sitemap.xml`.
 `js/rastreamento.js` conta como conversão todo clique em WhatsApp, e-mail e telefone
 (incluindo "Finalizar pedido"). Fica desligado até preencher `GOOGLE_ADS_ID` e
 `GOOGLE_ADS_LABEL` (e opcionalmente `GA4_ID`) — as instruções estão no topo do arquivo.
+
