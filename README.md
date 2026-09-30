@@ -73,3 +73,22 @@ python3 -m http.server 8000
   um catálogo único.
 - Configurar um formulário de contato/orçamento real.
 - Adicionar `favicon` e imagens de compartilhamento (Open Graph).
+
+## 🧩 Páginas de produto (geradas)
+
+Cada ponteira, acessório e kit tem uma página própria (`ponta-sem-fim-p4.html`, etc.),
+além do guia `guia-qual-ponteira-usar.html` e das páginas `desentupidoras.html` e
+`prefeituras-e-saae.html`. Elas são **geradas** a partir de `tools/produtos.py`:
+
+```bash
+python3 tools/gerar_paginas.py
+```
+
+Para mudar texto, medida ou foto de um produto, edite `tools/produtos.py` e rode o
+comando acima. Depois de criar páginas novas, atualize o `sitemap.xml`.
+
+## 📈 Rastreamento de contatos
+
+`js/rastreamento.js` conta como conversão todo clique em WhatsApp, e-mail e telefone
+(incluindo "Finalizar pedido"). Fica desligado até preencher `GOOGLE_ADS_ID` e
+`GOOGLE_ADS_LABEL` (e opcionalmente `GA4_ID`) — as instruções estão no topo do arquivo.

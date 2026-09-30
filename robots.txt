@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /SITE/
+Disallow: /tools/
 
 Sitemap: https://www.varetasbr.com.br/sitemap.xml

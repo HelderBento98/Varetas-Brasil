@@ -1657,3 +1657,7 @@ footer {
         transform: none;
     }
 }
+
+/* Links adicionados em Aplicações e FAQ */
+.app-card h3 a { color: inherit; }
+.app-link, .faq-answer a { color: var(--gold-dark); font-weight: 600; text-decoration: underline; }
