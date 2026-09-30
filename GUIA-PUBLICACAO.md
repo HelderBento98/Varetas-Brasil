@@ -55,7 +55,7 @@ Isso avisa o Google que o site existe e acelera a indexação.
    - **Endereço:** Ademir Tolentino, 204 — Sertãozinho/SP
    - **Telefone:** (16) 99192-6696
    - **Site:** https://www.varetasbr.com.br
-   - **Horário:** Seg a Sex, 8h às 18h
+   - **Horário:** Seg a Sex, 7h às 17h
 3. Faça a **verificação** (o Google confirma o endereço).
 4. Adicione **fotos** reais (produtos, fábrica, equipe) — ajuda muito.
 
