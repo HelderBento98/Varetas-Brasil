@@ -522,3 +522,14 @@
 }
 .cat-item h3 a { color: inherit; }
 .cat-item h3 a:hover { color: var(--gold-dark); }
+.reach-tip {
+    display: inline-block;
+    margin-top: 14px;
+    background: var(--white);
+    border: 1px solid var(--gold-light);
+    border-radius: var(--radius-sm);
+    padding: 10px 16px;
+    font-size: 0.9rem;
+}
+.reach-tip i { color: var(--gold-dark); margin-right: 4px; }
+.reach-tip a { color: var(--primary-green); font-weight: 700; text-decoration: underline; }

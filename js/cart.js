@@ -38,6 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="cart-body"></div>
         <div class="cart-foot">
+            <div class="cart-client">
+                <p class="cart-client-title">Seus dados <span>(opcional — agiliza o orçamento e o frete)</span></p>
+                <input type="text" data-cli="nome" placeholder="Seu nome" autocomplete="name">
+                <input type="text" data-cli="empresa" placeholder="Empresa ou órgão" autocomplete="organization">
+                <input type="text" data-cli="cidade" placeholder="Cidade / UF de entrega" autocomplete="address-level2">
+            </div>
             <p class="cart-note">Revise os itens e finalize pelo WhatsApp ou e-mail — nossa equipe passa os valores e condições.</p>
             <a class="btn btn-primary cart-finalize" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Finalizar pelo WhatsApp</a>
             <a class="btn btn-outline cart-email"><i class="fa-regular fa-envelope"></i> Finalizar por E-mail</a>
@@ -59,11 +65,26 @@ document.addEventListener('DOMContentLoaded', () => {
     drawer.querySelector('.cart-clear').addEventListener('click', () => { cart = []; save(); render(); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
 
+    /* ---------- dados do cliente (opcionais) ---------- */
+    const CKEY = 'vb_cliente';
+    let cli = (() => { try { return JSON.parse(localStorage.getItem(CKEY)) || {}; } catch (e) { return {}; } })();
+    drawer.querySelectorAll('[data-cli]').forEach(inp => {
+        inp.value = cli[inp.dataset.cli] || '';
+        inp.addEventListener('input', () => {
+            cli[inp.dataset.cli] = inp.value.trim();
+            try { localStorage.setItem(CKEY, JSON.stringify(cli)); } catch (e) { }
+            finalizeBtn.href = waLink();
+            emailBtn.href = mailLink();
+        });
+    });
+
     const count = () => cart.reduce((s, i) => s + i.qty, 0);
 
     function orderText() {
         let m = 'Olá! Gostaria de fazer um pedido/orçamento:\n\n';
         cart.forEach(i => { m += `• ${i.qty}x ${i.name}\n`; });
+        const dados = [['Nome', cli.nome], ['Empresa/órgão', cli.empresa], ['Entrega em', cli.cidade]].filter(d => d[1]);
+        if (dados.length) m += '\n' + dados.map(d => `${d[0]}: ${d[1]}`).join('\n') + '\n';
         m += '\nPoderiam me passar os valores e condições? Obrigado!';
         return m;
     }
