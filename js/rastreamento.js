@@ -12,8 +12,8 @@
    Enquanto os campos estiverem vazios, nada é carregado.
    ===================================================================== */
 (function () {
-    var GOOGLE_ADS_ID = '';     // ex.: 'AW-1234567890'
-    var GOOGLE_ADS_LABEL = '';  // ex.: 'AbCdEfGhIjKlMn'
+    var GOOGLE_ADS_ID = 'AW-18343401946';
+    var GOOGLE_ADS_LABEL = 'sO4yCOPa6IsdENqz6KpE';
     var GA4_ID = '';            // ex.: 'G-XXXXXXXXXX'
 
     var principal = GOOGLE_ADS_ID || GA4_ID;
@@ -46,9 +46,9 @@
         if (!c) return;
         var pedido = a.classList.contains('cart-finalize') || a.classList.contains('cart-email');
         var dados = { canal: c, tipo: pedido ? 'pedido' : 'contato', pagina: location.pathname };
-        if (GA4_ID) gtag('event', 'generate_lead', dados);
+        if (GA4_ID) gtag('event', 'generate_lead', Object.assign({ transport_type: 'beacon' }, dados));
         if (GOOGLE_ADS_ID && GOOGLE_ADS_LABEL) {
-            gtag('event', 'conversion', { send_to: GOOGLE_ADS_ID + '/' + GOOGLE_ADS_LABEL });
+            gtag('event', 'conversion', { send_to: GOOGLE_ADS_ID + '/' + GOOGLE_ADS_LABEL, transport_type: 'beacon' });
         }
     }, true);
 })();
