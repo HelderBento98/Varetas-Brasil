@@ -94,3 +94,4 @@ comando acima. Depois de criar páginas novas, atualize o `sitemap.xml`.
 `GOOGLE_ADS_LABEL` (e opcionalmente `GA4_ID`) — as instruções estão no topo do arquivo.
 
 
+
