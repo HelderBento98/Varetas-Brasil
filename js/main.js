@@ -171,13 +171,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(active - 1); }
             if (e.key === 'ArrowRight') { e.preventDefault(); goTo(active + 1); }
         });
-        let raf = 0;
-        track.addEventListener('scroll', () => {
-            cancelAnimationFrame(raf);
-            raf = requestAnimationFrame(update);
-        }, { passive: true });
-        window.addEventListener('resize', () => goTo(Math.max(active, 0), 'auto'));
-        goTo(cards.length > 1 ? 1 : 0, 'auto');
-        update();
+        track.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', () => goTo(Math.max(active, 0), 'instant'));
+        const start = () => { goTo(cards.length > 1 ? 1 : 0, 'instant'); update(); };
+        start();
+        window.addEventListener('load', start, { once: true });
     });
 });
