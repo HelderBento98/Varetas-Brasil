@@ -146,9 +146,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const cards = Array.from(track.querySelectorAll('.best-card'));
         if (!cards.length) return;
         let active = -1;
+        let target = -1;
+        let settle = 0;
         const centerOf = c => c.offsetLeft + c.offsetWidth / 2;
         const goTo = (i, behavior = 'smooth') => {
             i = (i + cards.length) % cards.length;
+            target = i;
+            clearTimeout(settle);
+            settle = setTimeout(() => { target = -1; }, 700);
             track.scrollTo({ left: centerOf(cards[i]) - track.clientWidth / 2, behavior });
         };
         const update = () => {
@@ -162,14 +167,15 @@ document.addEventListener('DOMContentLoaded', () => {
             active = best;
             cards.forEach((c, i) => c.classList.toggle('is-active', i === best));
         };
-        prev.addEventListener('click', () => goTo(active - 1));
-        next.addEventListener('click', () => goTo(active + 1));
+        const current = () => (target >= 0 ? target : active);
+        prev.addEventListener('click', () => goTo(current() - 1));
+        next.addEventListener('click', () => goTo(current() + 1));
         cards.forEach((c, i) => c.addEventListener('click', e => {
             if (i !== active) { e.preventDefault(); goTo(i); }
         }));
         track.addEventListener('keydown', e => {
-            if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(active - 1); }
-            if (e.key === 'ArrowRight') { e.preventDefault(); goTo(active + 1); }
+            if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(current() - 1); }
+            if (e.key === 'ArrowRight') { e.preventDefault(); goTo(current() + 1); }
         });
         track.addEventListener('scroll', update, { passive: true });
         window.addEventListener('resize', () => goTo(Math.max(active, 0), 'instant'));
