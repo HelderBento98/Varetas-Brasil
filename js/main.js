@@ -135,3 +135,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+/* ---------- Carrossel "Os mais pedidos" ---------- */
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.best-carousel').forEach(car => {
+        const track = car.querySelector('.best-grid');
+        const prev = car.querySelector('.best-prev');
+        const next = car.querySelector('.best-next');
+        if (!track || !prev || !next) return;
+        const step = () => {
+            const card = track.querySelector('.best-card');
+            return card ? card.getBoundingClientRect().width + 20 : track.clientWidth * 0.8;
+        };
+        const update = () => {
+            prev.disabled = track.scrollLeft <= 10;
+            next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 10;
+        };
+        prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+        next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+        track.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
+        update();
+    });
+});

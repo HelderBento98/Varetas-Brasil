@@ -1673,11 +1673,48 @@ footer {
 /* ================= Mais pedidos / Comece por aqui ================= */
 .best { background: var(--light-gray); text-align: center; }
 .best h2 { margin-bottom: 40px; }
+.best-carousel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 .best-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    display: flex;
     gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    padding: 8px 4px 16px;
+    flex: 1;
     text-align: left;
+}
+.best-grid::-webkit-scrollbar { display: none; }
+.best-grid .best-card {
+    flex: 0 0 calc((100% - 60px) / 4);
+    min-width: 260px;
+    scroll-snap-align: start;
+}
+.best-arrow {
+    flex: 0 0 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    background: var(--white);
+    color: var(--primary-green);
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: background .2s, color .2s, opacity .2s;
+}
+.best-arrow:hover:not(:disabled) { background: var(--primary-green); color: var(--white); }
+.best-arrow:disabled { opacity: .35; cursor: default; }
+@media (max-width: 600px) {
+    .best-carousel { gap: 6px; }
+    .best-arrow { flex-basis: 36px; height: 36px; font-size: .85rem; }
+    .best-grid .best-card { flex-basis: 88%; min-width: 0; gap: 12px; padding: 14px; }
+    .best-grid .best-thumb { flex-basis: 72px; height: 72px; }
 }
 .best-card {
     display: flex;
