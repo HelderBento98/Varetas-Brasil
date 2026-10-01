@@ -136,25 +136,48 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-/* ---------- Carrossel "Os mais pedidos" ---------- */
+/* ---------- Carrossel "Os mais pedidos" (card central em destaque) ---------- */
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.best-carousel').forEach(car => {
         const track = car.querySelector('.best-grid');
         const prev = car.querySelector('.best-prev');
         const next = car.querySelector('.best-next');
         if (!track || !prev || !next) return;
-        const step = () => {
-            const card = track.querySelector('.best-card');
-            return card ? card.getBoundingClientRect().width + 20 : track.clientWidth * 0.8;
+        const cards = Array.from(track.querySelectorAll('.best-card'));
+        if (!cards.length) return;
+        let active = -1;
+        const centerOf = c => c.offsetLeft + c.offsetWidth / 2;
+        const goTo = (i, behavior = 'smooth') => {
+            i = (i + cards.length) % cards.length;
+            track.scrollTo({ left: centerOf(cards[i]) - track.clientWidth / 2, behavior });
         };
         const update = () => {
-            prev.disabled = track.scrollLeft <= 10;
-            next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 10;
+            const mid = track.scrollLeft + track.clientWidth / 2;
+            let best = 0, dist = Infinity;
+            cards.forEach((c, i) => {
+                const d = Math.abs(centerOf(c) - mid);
+                if (d < dist) { dist = d; best = i; }
+            });
+            if (best === active) return;
+            active = best;
+            cards.forEach((c, i) => c.classList.toggle('is-active', i === best));
         };
-        prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
-        next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
-        track.addEventListener('scroll', update, { passive: true });
-        window.addEventListener('resize', update);
+        prev.addEventListener('click', () => goTo(active - 1));
+        next.addEventListener('click', () => goTo(active + 1));
+        cards.forEach((c, i) => c.addEventListener('click', e => {
+            if (i !== active) { e.preventDefault(); goTo(i); }
+        }));
+        track.addEventListener('keydown', e => {
+            if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(active - 1); }
+            if (e.key === 'ArrowRight') { e.preventDefault(); goTo(active + 1); }
+        });
+        let raf = 0;
+        track.addEventListener('scroll', () => {
+            cancelAnimationFrame(raf);
+            raf = requestAnimationFrame(update);
+        }, { passive: true });
+        window.addEventListener('resize', () => goTo(Math.max(active, 0), 'auto'));
+        goTo(cards.length > 1 ? 1 : 0, 'auto');
         update();
     });
 });
